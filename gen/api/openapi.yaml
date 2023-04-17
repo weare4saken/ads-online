@@ -1,0 +1,771 @@
+openapi: 3.0.3
+info:
+  title: Ads app API Documentation
+  version: "1.0"
+servers:
+- url: http://localhost:8080
+paths:
+  /users/set_password:
+    post:
+      operationId: setPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewPassword'
+      responses:
+        "200":
+          description: OK
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Обновление пароля
+      tags:
+      - Пользователи
+      x-contentType: application/json
+      x-accepts: application/json
+  /users/me:
+    get:
+      operationId: getUser
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: OK
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Получить информацию об авторизованном пользователе
+      tags:
+      - Пользователи
+      x-accepts: application/json
+    patch:
+      operationId: updateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: OK
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+      summary: Обновить информацию об авторизованном пользователе
+      tags:
+      - Пользователи
+      x-contentType: application/json
+      x-accepts: application/json
+  /users/me/image:
+    patch:
+      operationId: updateUserImage
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object'
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                image:
+                  format: binary
+                  type: string
+              required:
+              - image
+              type: object
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+      summary: Обновить аватар авторизованного пользователя
+      tags:
+      - Пользователи
+      x-contentType: multipart/form-data
+      x-accepts: application/json
+  /register:
+    post:
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterReq'
+      responses:
+        "404":
+          description: Not Found
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      summary: Регистрация пользователя
+      tags:
+      - Регистрация
+      x-contentType: application/json
+      x-accepts: application/json
+  /login:
+    post:
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginReq'
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      summary: Авторизация пользователя
+      tags:
+      - Авторизация
+      x-contentType: application/json
+      x-accepts: application/json
+  /ads:
+    get:
+      operationId: getAllAds
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseWrapperAds'
+          description: OK
+      summary: Получить все объявления
+      tags:
+      - Объявления
+      x-accepts: application/json
+    post:
+      operationId: addAd
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_1'
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                properties:
+                  $ref: '#/components/schemas/CreateAds'
+                image:
+                  format: binary
+                  type: string
+              required:
+              - image
+              - properties
+              type: object
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ads'
+          description: Created
+        "404":
+          description: Not Found
+        "403":
+          description: Forbidden
+        "401":
+          description: Unauthorized
+      summary: Добавить объявление
+      tags:
+      - Объявления
+      x-contentType: multipart/form-data
+      x-accepts: application/json
+  /ads/{id}/comments:
+    get:
+      operationId: getComments
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseWrapperComment'
+          description: OK
+        "404":
+          description: Not Found
+      summary: Получить комментарии объявления
+      tags:
+      - Комментарии
+      x-accepts: application/json
+    post:
+      operationId: addComment
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: OK
+        "404":
+          description: Not Found
+        "403":
+          description: Forbidden
+        "401":
+          description: Unauthorized
+      summary: Добавить комментарий к объявлению
+      tags:
+      - Комментарии
+      x-contentType: application/json
+      x-accepts: application/json
+  /ads/{id}:
+    delete:
+      operationId: removeAd
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "204":
+          description: No Content
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      summary: Удалить объявление
+      tags:
+      - Объявления
+      x-accepts: application/json
+    get:
+      operationId: getAds
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FullAds'
+          description: OK
+        "404":
+          description: Not Found
+      summary: Получить информацию об объявлении
+      tags:
+      - Объявления
+      x-accepts: application/json
+    patch:
+      operationId: updateAds
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAds'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ads'
+          description: OK
+        "404":
+          description: Not Found
+        "403":
+          description: Forbidden
+        "401":
+          description: Unauthorized
+      summary: Обновить информацию об объявлении
+      tags:
+      - Объявления
+      x-contentType: application/json
+      x-accepts: application/json
+  /ads/{adId}/comments/{commentId}:
+    delete:
+      operationId: deleteComment
+      parameters:
+      - explode: false
+        in: path
+        name: adId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - explode: false
+        in: path
+        name: commentId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "403":
+          description: Forbidden
+        "401":
+          description: Unauthorized
+      summary: Удалить комментарий
+      tags:
+      - Комментарии
+      x-accepts: application/json
+    patch:
+      operationId: updateComment
+      parameters:
+      - explode: false
+        in: path
+        name: adId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      - explode: false
+        in: path
+        name: commentId
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+          description: OK
+        "404":
+          description: Not Found
+        "403":
+          description: Forbidden
+        "401":
+          description: Unauthorized
+      summary: Обновить комментарий
+      tags:
+      - Комментарии
+      x-contentType: application/json
+      x-accepts: application/json
+  /ads/me:
+    get:
+      operationId: getAdsMe
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseWrapperAds'
+          description: OK
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+      summary: Получить объявления авторизованного пользователя
+      tags:
+      - Объявления
+      x-accepts: application/json
+  /ads/{id}/image:
+    patch:
+      operationId: updateImage
+      parameters:
+      - explode: false
+        in: path
+        name: id
+        required: true
+        schema:
+          format: int32
+          type: integer
+        style: simple
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_2'
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                image:
+                  format: binary
+                  type: string
+              required:
+              - image
+              type: object
+      responses:
+        "200":
+          content:
+            application/octet-stream:
+              schema:
+                items:
+                  format: byte
+                  type: string
+                type: array
+          description: OK
+        "404":
+          description: Not Found
+      summary: Обновить картинку объявления
+      tags:
+      - Объявления
+      x-contentType: multipart/form-data
+      x-accepts: application/octet-stream
+components:
+  requestBodies:
+    inline_object_1:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+    inline_object:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/inline_object'
+    inline_object_2:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+  schemas:
+    NewPassword:
+      example:
+        newPassword: newPassword
+        currentPassword: currentPassword
+      properties:
+        currentPassword:
+          description: текущий пароль
+          type: string
+        newPassword:
+          description: новый пароль
+          type: string
+      type: object
+    RegisterReq:
+      example:
+        firstName: firstName
+        lastName: lastName
+        password: password
+        role: USER
+        phone: phone
+        username: username
+      properties:
+        username:
+          description: логин
+          type: string
+        password:
+          description: пароль
+          type: string
+        firstName:
+          description: имя пользователя
+          type: string
+        lastName:
+          description: фамилия пользователя
+          type: string
+        phone:
+          description: телефон пользователя
+          type: string
+        role:
+          description: роль пользователя
+          enum:
+          - USER
+          - ADMIN
+          type: string
+      type: object
+    LoginReq:
+      example:
+        password: password
+        username: username
+      properties:
+        password:
+          description: пароль
+          type: string
+        username:
+          description: логин
+          type: string
+      type: object
+    CreateAds:
+      example:
+        price: 0
+        description: description
+        title: title
+      properties:
+        description:
+          description: описание объявления
+          type: string
+        price:
+          description: цена объявления
+          format: int32
+          type: integer
+        title:
+          description: заголовок объявления
+          type: string
+      required:
+      - description
+      - price
+      - title
+      type: object
+    Ads:
+      example:
+        image: image
+        author: 6
+        price: 5
+        pk: 1
+        title: title
+      properties:
+        author:
+          description: id автора объявления
+          format: int32
+          type: integer
+        image:
+          description: ссылка на картинку объявления
+          type: string
+        pk:
+          description: id объявления
+          format: int32
+          type: integer
+        price:
+          description: цена объявления
+          format: int32
+          type: integer
+        title:
+          description: заголовок объявления
+          type: string
+      type: object
+    Comment:
+      example:
+        createdAt: 1
+        authorFirstName: authorFirstName
+        author: 6
+        authorImage: authorImage
+        pk: 5
+        text: text
+      properties:
+        author:
+          description: id автора комментария
+          format: int32
+          type: integer
+        authorImage:
+          description: ссылка на аватар автора комментария
+          type: string
+        authorFirstName:
+          description: имя создателя комментария
+          type: string
+        createdAt:
+          description: дата и время создания комментария в миллисекундах с 00:00:00
+            01.01.1970
+          format: int64
+          type: integer
+        pk:
+          description: id комментария
+          format: int32
+          type: integer
+        text:
+          description: текст комментария
+          type: string
+      type: object
+    User:
+      example:
+        firstName: firstName
+        lastName: lastName
+        image: image
+        phone: phone
+        id: 0
+        email: email
+      properties:
+        id:
+          description: id пользователя
+          format: int32
+          type: integer
+        email:
+          description: логин пользователя
+          type: string
+        firstName:
+          description: имя пользователя
+          type: string
+        lastName:
+          description: фамилия пользователя
+          type: string
+        phone:
+          description: телефон пользователя
+          type: string
+        image:
+          description: ссылка на аватар пользователя
+          type: string
+      type: object
+    ResponseWrapperAds:
+      example:
+        count: 0
+        results:
+        - image: image
+          author: 6
+          price: 5
+          pk: 1
+          title: title
+        - image: image
+          author: 6
+          price: 5
+          pk: 1
+          title: title
+      properties:
+        count:
+          description: общее количество объявлений
+          format: int32
+          type: integer
+        results:
+          items:
+            $ref: '#/components/schemas/Ads'
+          type: array
+      type: object
+    FullAds:
+      example:
+        image: image
+        authorLastName: authorLastName
+        authorFirstName: authorFirstName
+        phone: phone
+        price: 6
+        description: description
+        pk: 0
+        title: title
+        email: email
+      properties:
+        pk:
+          description: id объявления
+          format: int32
+          type: integer
+        authorFirstName:
+          description: имя автора объявления
+          type: string
+        authorLastName:
+          description: фамилия автора объявления
+          type: string
+        description:
+          description: описание объявления
+          type: string
+        email:
+          description: логин автора объявления
+          type: string
+        image:
+          description: ссылка на картинку объявления
+          type: string
+        phone:
+          description: телефон автора объявления
+          type: string
+        price:
+          description: цена объявления
+          format: int32
+          type: integer
+        title:
+          description: заголовок объявления
+          type: string
+      type: object
+    ResponseWrapperComment:
+      example:
+        count: 0
+        results:
+        - createdAt: 1
+          authorFirstName: authorFirstName
+          author: 6
+          authorImage: authorImage
+          pk: 5
+          text: text
+        - createdAt: 1
+          authorFirstName: authorFirstName
+          author: 6
+          authorImage: authorImage
+          pk: 5
+          text: text
+      properties:
+        count:
+          description: общее количество комментариев
+          format: int32
+          type: integer
+        results:
+          items:
+            $ref: '#/components/schemas/Comment'
+          type: array
+      type: object
+    inline_object:
+      properties:
+        image:
+          format: binary
+          type: string
+      required:
+      - image
+      type: object
+    inline_object_1:
+      properties:
+        properties:
+          $ref: '#/components/schemas/CreateAds'
+        image:
+          format: binary
+          type: string
+      required:
+      - image
+      - properties
+      type: object
+    inline_object_2:
+      properties:
+        image:
+          format: binary
+          type: string
+      required:
+      - image
+      type: object
+

@@ -1,0 +1,73 @@
+package ru.skypro.project.marketplace.service.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.skypro.project.marketplace.dto.AdsCommentDto;
+import ru.skypro.project.marketplace.exception.CommentNotFoundException;
+import ru.skypro.project.marketplace.mapper.AdsCommentMapper;
+import ru.skypro.project.marketplace.mapper.UserMapper;
+import ru.skypro.project.marketplace.model.Comment;
+import ru.skypro.project.marketplace.model.User;
+import ru.skypro.project.marketplace.repository.CommentRepository;
+import ru.skypro.project.marketplace.service.CommentService;
+
+import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
+
+//@Slf4j
+@Service
+@Transactional
+@RequiredArgsConstructor
+public class CommentServiceImpl implements CommentService {
+
+    private final CommentRepository commentRepository;
+    private final UserServiceImpl userService;
+    private final AdsServiceImpl adsService;
+
+    @Override
+    public List<AdsCommentDto> getComments(Integer id) {
+        return commentRepository.findAllByAdsId(id)
+                .stream()
+                .map(AdsCommentMapper.INSTANSE::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public AdsCommentDto addAdsComment(Integer id, AdsCommentDto adsCommentDto, Authentication authentication) {
+        Comment comment = AdsCommentMapper.INSTANSE.toEntity(adsCommentDto);
+        User user = userService.getUserByUsername(authentication.getName());
+        comment.setAuthor(user);
+        comment.setAds(adsService.findAdsById(id));
+        comment.setCreatedAt(Instant.now());
+        commentRepository.save(comment);
+        return AdsCommentMapper.INSTANSE.toDto(comment);
+    }
+
+    @Override
+    public void deleteAdsComment(Integer adId, Integer commentId) {
+        Comment comment = getAdsComment(commentId, adId);
+        commentRepository.delete(comment);
+    }
+
+    @Override
+    public AdsCommentDto updateComments(Integer adId, Integer commentId,
+                                        AdsCommentDto adsCommentDto) {
+        Comment adsComment = getAdsComment(commentId, adId);
+        adsComment.setText(adsCommentDto.getText());
+        commentRepository.save(adsComment);
+        return AdsCommentMapper.INSTANSE.toDto(adsComment);
+    }
+
+    public Comment getAdsComment(Integer commentId, Integer adId) {
+        return commentRepository.findByIdAndAdsId(commentId, adId).orElseThrow(CommentNotFoundException::new);
+    }
+
+    @Override
+    public Comment getCommentById(Integer id) {
+        return commentRepository.findById(id).orElseThrow(CommentNotFoundException::new);
+    }
+
+}

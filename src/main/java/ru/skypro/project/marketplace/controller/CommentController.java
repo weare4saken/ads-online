@@ -23,14 +23,14 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @Operation(summary = "Получить комментарии объявления", description = "getComments", tags = {"Комментарии"})
+    @Operation(summary = "Получить комментарии объявления", tags = "Комментарии")
     @GetMapping("/{id}/comments")
     public ResponseWrapper<AdsCommentDto> getComments(@PathVariable("id") Integer id) {
         return ResponseWrapper.of(commentService.getComments(id));
     }
 
     @Operation(
-            summary = "Добавление нового комментария к объявлению", tags = {"Комментарии"},
+            summary = "Добавление нового комментария к объявлению", tags = "Комментарии",
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK",
                             content = {@Content(mediaType = "application/json",
@@ -48,7 +48,7 @@ public class CommentController {
     }
 
     @Operation(
-            summary = "Удалить комментарий", tags = {"Комментарии"},
+            summary = "Удалить комментарий", tags = "Комментарии",
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK", content = @Content),
                     @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
@@ -66,7 +66,7 @@ public class CommentController {
     }
 
     @Operation(
-            summary = "Обновить комментарий", tags = {"Комментарии"},
+            summary = "Обновить комментарий", tags = "Комментарии",
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK",
                             content = {@Content(mediaType = "application/json",

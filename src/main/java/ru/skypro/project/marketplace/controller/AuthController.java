@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,7 +22,7 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @Operation(summary = "Авторизация пользователя", tags = {"Авторизация"},
+    @Operation(summary = "Авторизация пользователя", tags = "Авторизация",
             responses = {
                     @ApiResponse(
                             responseCode = "200", description = "OK",
@@ -36,14 +35,10 @@ public class AuthController {
     )
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginReq req) {
-        if (authService.login(req.getUsername(), req.getPassword())) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
+        return ResponseEntity.ok(authService.login(req.getUsername(), req.getPassword()));
     }
 
-    @Operation(summary = "Регистрация пользователя", tags = {"Регистрация"},
+    @Operation(summary = "Регистрация пользователя", tags = "Регистрация",
             responses = {
                     @ApiResponse(
                             responseCode = "200", description = "OK",
@@ -56,11 +51,7 @@ public class AuthController {
     )
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterReq req) {
-        if (authService.register(req)) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+        return ResponseEntity.ok(authService.register(req));
     }
 
 }

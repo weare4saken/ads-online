@@ -8,5 +8,4 @@ CREATE TABLE IF NOT EXISTS ads(
     price           INTEGER NOT NULL,
     author_id       INT REFERENCES users(id),
     image_id        INTEGER REFERENCES image(id)
---         VARCHAR (255)
 );

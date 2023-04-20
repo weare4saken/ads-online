@@ -8,13 +8,14 @@ import ru.skypro.project.marketplace.dto.UserDto;
 import ru.skypro.project.marketplace.model.Avatar;
 import ru.skypro.project.marketplace.model.User;
 
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
     String USER_AVATAR = "/users/avatar/";
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(target = "avatar", source = "avatar", qualifiedByName = "avatarMapping")
+    @Mapping(target = "image", source = "avatar", qualifiedByName = "avatarMapping")
     UserDto toDto(User user);
 
     @Named("avatarMapping")
@@ -24,10 +25,5 @@ public interface UserMapper {
         }
         return USER_AVATAR + avatar.getId();
     }
-
-    /*@Mapping(target = "password", ignore = true)
-    @Mapping(target = "avatar", ignore = true)
-    @Mapping(target = "enabled", ignore = true)
-    User toEntity(UserDto dto);*/
 
 }

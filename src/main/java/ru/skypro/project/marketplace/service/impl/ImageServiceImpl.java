@@ -24,14 +24,14 @@ public class ImageServiceImpl implements ImageService<Image> {
 
     @Override
     public void remove(Image image) {
-        log.debug("Removing avatar with id {}", image.getId());
+        log.debug("Removing image with id {}", image.getId());
         imageRepository.delete(image);
-        log.info("Avatar removed successfully");
+        log.info("Image removed successfully");
     }
 
     @Override
     public Image uploadImage(MultipartFile imageFile) throws IOException {
-        log.debug("Uploading inage file: " + imageFile.getOriginalFilename());
+        log.debug("Uploading image file: " + imageFile.getOriginalFilename());
         Image image = new Image();
         image.setMediaType(imageFile.getContentType());
         image.setFileSize(imageFile.getSize());

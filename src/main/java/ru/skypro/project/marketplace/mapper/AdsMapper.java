@@ -10,6 +10,7 @@ import ru.skypro.project.marketplace.dto.FullAds;
 import ru.skypro.project.marketplace.model.Ads;
 import ru.skypro.project.marketplace.model.Image;
 
+
 @Mapper(componentModel = "spring")
 public interface AdsMapper {
 
@@ -41,10 +42,5 @@ public interface AdsMapper {
         }
         return ADS_IMAGE + image.getId();
     }
-
-    /*@Mapping(target = "id", source = "pk")
-    @Mapping(target = "author.id", source = "author")
-    @Mapping(target = "image", ignore = true)
-    Ads toEntity(AdsDto dto);*/
 
 }

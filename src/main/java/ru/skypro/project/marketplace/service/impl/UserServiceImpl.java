@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService {
             avatarService.remove(user.getAvatar());
         }
         user.setAvatar(avatarService.uploadImage(avatar));
+        userRepository.save(user);
         log.debug("Avatar updated for user: {}", authentication.getName());
     }
 

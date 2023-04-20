@@ -8,6 +8,7 @@ import ru.skypro.project.marketplace.dto.AdsCommentDto;
 import ru.skypro.project.marketplace.model.Comment;
 import ru.skypro.project.marketplace.model.Avatar;
 
+
 @Mapper(componentModel = "spring")
 public interface AdsCommentMapper {
 

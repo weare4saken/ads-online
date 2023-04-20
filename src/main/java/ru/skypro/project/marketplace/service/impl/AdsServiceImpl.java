@@ -93,6 +93,7 @@ public class AdsServiceImpl implements AdsService {
         imageService.remove(ads.getImage());
         ads.setImage(imageService.uploadImage(imageFile));
         adsRepository.save(ads);
+        log.debug("Avatar updated for ads: {}", ads.getTitle());
     }
 
     public Ads findAdsById(Integer id) {

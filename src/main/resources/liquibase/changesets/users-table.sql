@@ -10,8 +10,6 @@ CREATE TABLE IF NOT EXISTS users (
 --      NOT NULL,
     phone           VARCHAR(15),
 --         NOT NULL,
---     role            VARCHAR(5),
---     NOT NULL,
     password        VARCHAR(255) NOT NULL,
     enabled         BOOLEAN,
     avatar_id       INTEGER REFERENCES avatar(id)

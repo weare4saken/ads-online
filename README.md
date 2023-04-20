@@ -36,23 +36,27 @@ ___
     - Swagger
     - Lombok
     - Stream API
+    - Mapstruck
 * SQL:
     - PostgreSQL
     - Liquibase
+* Test:
+    - Junit
+    - Mockito
 * Frontend:
     - Docker image
 
 ___
 ## Запуск приложения
 * Для запуска приложения Вам потребуется выполнить несколько шагов:
-    - Клонировать проекта в среду разработки (например, **IntelliJ IDEA** или **VSCode**);
+    - Клонировать проект и открыть его в среде разработки (например, *IntelliJ IDEA* или *VSCode*);
     - В файле **application.properties** указать путь к Вашей базе данных;
     - Запустить **Docker**;
-    - В командной строке прописать **docker pull ghcr.io/bizinmitya/front-react-avito:latest** и скачать образ;
-    - Запустить **Docker image** с помощью команды **docker run -p 3000:3000 ghcr.io/bizinmitya/front-react-avito:latest**;
+    - В командной строке прописать ```docker pull ghcr.io/bizinmitya/front-react-avito:latest``` и скачать образ;
+    - Запустить **Docker image** с помощью команды ```docker run -p 3000:3000 ghcr.io/bizinmitya/front-react-avito:latest```;
     - Запустить метод **main** в файле **MarketplaceApplication.java**.
 
-После выполнения всех шагов веб-сайт будет доступен по адресу: http://localhost:3000
+После выполнения всех шагов, веб-приложение будет доступно по адресу: http://localhost:3000
 
 ___
 ### Разработчик:

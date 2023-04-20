@@ -9,12 +9,10 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
-//@Data
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Table(name = "users")
 public class User {
 
     @Id
@@ -28,23 +26,17 @@ public class User {
     private String lastName;
 //    @NotNull
     private String phone;
-//    @NotNull
-//    @Enumerated(EnumType.STRING)
-//    private Role role;
     @NotNull
     private String password;
-
     private Boolean enabled;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "author")
     private List<Ads> ads;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "author")
     private List<Comment> comments;
 
     @OneToOne
-    private Avatar avatar; //мб image?
+    private Avatar avatar;
 
 }

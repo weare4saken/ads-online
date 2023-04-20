@@ -33,7 +33,7 @@ public class AdsController {
     private final ImageServiceImpl imageService;
 
     @Operation(
-            summary = "Получить все объявления", tags = {"Объявления"},
+            summary = "Получить все объявления", tags = "Объявления",
             responses = {
                     @ApiResponse(
                             responseCode = "200", description = "OK",
@@ -47,7 +47,7 @@ public class AdsController {
     }
 
     @Operation(
-            summary = "Добавить объявление", tags = {"Объявления"},
+            summary = "Добавить объявление", tags = "Объявления",
             responses = {
                     @ApiResponse(
                             responseCode = "201", description = "Created",
@@ -58,7 +58,6 @@ public class AdsController {
                     @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
             }
     )
-    //pre-authorized?
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<AdsDto> addAds(@RequestPart("image") MultipartFile imageFile,
                                          @Valid
@@ -69,7 +68,7 @@ public class AdsController {
     }
 
     @Operation(
-            summary = "Получить информацию об объявлении", tags = {"Объявления"},
+            summary = "Получить информацию об объявлении", tags = "Объявления",
             responses = {
                     @ApiResponse(
                             responseCode = "200", description = "OK",
@@ -84,7 +83,7 @@ public class AdsController {
     }
 
     @Operation(
-            summary = "Удалить объявление", tags = {"Объявления"},
+            summary = "Удалить объявление", tags = "Объявления",
             responses = {
                     @ApiResponse(responseCode = "200", description = "OK", content = @Content),
                     @ApiResponse(responseCode = "204", description = "No Content", content = @Content),
@@ -94,8 +93,6 @@ public class AdsController {
     )
     @PreAuthorize("adsServiceImpl.getAdsById(#id).getEmail()" +
                     "== authentication.principal.username or hasRole('ROLE_ADMIN')")
-    //работает ли? как передавать роль?
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeAds(@PathVariable("id") Integer id) {
         adsService.removeAdsById(id);
@@ -103,7 +100,7 @@ public class AdsController {
     }
 
     @Operation(
-            summary = "Обновить информацию об объявлении",tags = {"Объявления"},
+            summary = "Обновить информацию об объявлении",tags = "Объявления",
             responses = {
                     @ApiResponse(
                             responseCode = "200", description = "OK",
@@ -116,8 +113,6 @@ public class AdsController {
     )
     @PreAuthorize("adsServiceImpl.getAdsById(#id).getEmail()" +
                     "== authentication.principal.username or hasRole('ROLE_ADMIN')")
-    //работает ли? как передавать роль?
-
     @PatchMapping("/{id}")
     public ResponseEntity<AdsDto> updateAds(@PathVariable("id") Integer id,
                                             @RequestBody CreateAds createAds) {
@@ -125,7 +120,7 @@ public class AdsController {
     }
 
     @Operation(
-            summary = "Получить объявления авторизованного пользователя", tags = {"Объявления"},
+            summary = "Получить объявления авторизованного пользователя", tags = "Объявления",
             responses = {
                     @ApiResponse(
                             responseCode = "200", description = "OK",
@@ -141,7 +136,7 @@ public class AdsController {
     }
 
     @Operation(
-            summary = "Обновить картинку объявления",tags = {"Объявления"},
+            summary = "Обновить картинку объявления",tags = "Объявления",
             responses = {
                     @ApiResponse(
                             responseCode = "200", description = "OK",
@@ -154,13 +149,14 @@ public class AdsController {
                     "== authentication.principal.username or hasRole('ROLE_ADMIN')")
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateAdsImage(@PathVariable("id") Integer id,
-                                            @RequestBody MultipartFile imageFile) throws IOException {
+                                            @RequestPart("image") MultipartFile imageFile) throws IOException {
         adsService.updateAdsImage(id, imageFile);
         return ResponseEntity.ok().build();
     }
 
+    @Operation(hidden = true)
     @GetMapping("/image/{id}")
-    public ResponseEntity<byte[]> getAvatar(@PathVariable Integer id) {
+    public ResponseEntity<byte[]> getImage(@PathVariable("id") Integer id) {
         Pair<String, byte[]> pair = imageService.getImage(id);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(pair.getLeft()))

@@ -9,6 +9,8 @@ import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.project.marketplace.dto.RegisterReq;
+import ru.skypro.project.marketplace.exception.BadCredentialsException;
+import ru.skypro.project.marketplace.exception.IncorrectUsernameException;
 import ru.skypro.project.marketplace.repository.UserRepository;
 import ru.skypro.project.marketplace.service.AuthService;
 
@@ -29,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean login(String userName, String password) {
         if (!manager.userExists(userName)) {
-            return false;
+           throw new BadCredentialsException();
         }
         UserDetails userDetails = manager.loadUserByUsername(userName);
         return encoder.matches(password, userDetails.getPassword());
@@ -38,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean register(RegisterReq registerReq) {
         if (manager.userExists(registerReq.getUsername())) {
-            return false;
+            throw new IncorrectUsernameException();
         }
 
         manager.createUser(
@@ -49,6 +51,7 @@ public class AuthServiceImpl implements AuthService {
                         .roles(USER.toString())
                         .build());
 
+        //кусок говнокода
         ru.skypro.project.marketplace.model.
                 User user = userService.getUserByUsername(registerReq.getUsername());
 

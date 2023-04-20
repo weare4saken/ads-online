@@ -26,10 +26,10 @@ public class WebSecurityConfig {
             "/ads"
     };
 
-    @Bean
+    /*@Bean
     public UserDetailsManager userDetailsService(DataSource dataSource) {
         return new JdbcUserDetailsManager(dataSource);
-    }
+    }*/
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {

@@ -1,3 +1,4 @@
+/*
 package ru.skypro.project.marketplace.model;
 
 import lombok.Data;
@@ -18,3 +19,4 @@ public class Authority {
     private String authority;
 
 }
+*/

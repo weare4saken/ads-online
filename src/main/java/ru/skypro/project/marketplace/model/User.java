@@ -1,8 +1,8 @@
 package ru.skypro.project.marketplace.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.lang.NonNull;
+import ru.skypro.project.marketplace.enums.Role;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,6 +29,9 @@ public class User {
     @NotNull
     private String password;
     private Boolean enabled;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToMany(mappedBy = "author")
     private List<Ads> ads;

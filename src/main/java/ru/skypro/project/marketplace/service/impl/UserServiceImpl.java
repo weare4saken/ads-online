@@ -1,7 +1,7 @@
 package ru.skypro.project.marketplace.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import ru.skypro.project.marketplace.service.UserService;
 
 import java.io.IOException;
 
-//@Slf4j
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -27,21 +27,22 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final AvatarServiceImpl avatarService;
-//    private final UserMapper userMapper;
+
 
     @Override
     public void updatePassword(NewPassword newPassword, Authentication authentication) {
-
         User user = getUserByUsername(authentication.getName());
         if (!passwordEncoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
             throw new BadCredentialsException();
         }
         user.setPassword(passwordEncoder.encode(newPassword.getNewPassword()));
         userRepository.save(user);
+        log.debug("Password updated for user: {}", authentication.getName());
     }
 
     @Override
     public UserDto getUser(Authentication authentication) {
+        log.info("Returning details for user: {}", authentication.getName());
         return UserMapper.INSTANCE.toDto(getUserByUsername(authentication.getName()));
     }
 
@@ -52,20 +53,24 @@ public class UserServiceImpl implements UserService {
         user.setLastName(userDto.getLastName());
         user.setPhone(userDto.getPhone());
         userRepository.save(user);
+        log.debug("User details updated for user: {}", authentication.getName());
         return UserMapper.INSTANCE.toDto(user);
     }
 
     @Override
-    public void updateUserAvatar(MultipartFile avatar, Authentication authentication) throws IOException {
+    public void updateUserAvatar(MultipartFile avatar,
+                                 Authentication authentication) throws IOException {
         User user = getUserByUsername(authentication.getName());
         if (user.getAvatar() != null) {
             avatarService.remove(user.getAvatar());
         }
         user.setAvatar(avatarService.uploadImage(avatar));
+        log.debug("Avatar updated for user: {}", authentication.getName());
     }
 
     public User getUserByUsername(String username) {
-        return userRepository.findByUsernameIgnoreCase(username).orElseThrow(UsernameNotFoundException::new);
+        return userRepository.findByUsernameIgnoreCase(username)
+                .orElseThrow(UsernameNotFoundException::new);
     }
 
 }

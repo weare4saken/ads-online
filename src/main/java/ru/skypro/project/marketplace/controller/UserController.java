@@ -18,6 +18,8 @@ import ru.skypro.project.marketplace.service.impl.AvatarServiceImpl;
 import ru.skypro.project.marketplace.service.impl.UserServiceImpl;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -91,14 +93,14 @@ public class UserController {
                     @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
             }
     )
-    @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateUserAvatar(@RequestBody MultipartFile avatar,
+    @PatchMapping(value = "/me/image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<?> updateUserAvatar(@RequestPart MultipartFile avatarFile,
                                               Authentication authentication) throws IOException {
-        userService.updateUserAvatar(avatar, authentication);
+        userService.updateUserAvatar(avatarFile, authentication);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/avatar/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping(value = "/avatar/{id}", produces = {MediaType.IMAGE_JPEG_VALUE})
     public ResponseEntity<byte[]> getAvatar(@PathVariable Integer id) {
         Pair<String, byte[]> pair = avatarService.getImage(id);
         return ResponseEntity.ok()
@@ -107,4 +109,13 @@ public class UserController {
                 .body(pair.getRight());
     }
 
+   /*@GetMapping(value = "/avatar/{id}")
+//    , produces = {MediaType.IMAGE_JPEG_VALUE})
+//
+   public byte[] getAvatar(@PathVariable("id") Integer id) throws IOException {
+       return Files.readAllBytes(Paths.get("file:///C:/Users/kolod/Desktop/2c3d523050198c48c9ec8bbde64224d7.jpg"));
+//               avatarService.getAvatarById(id).getData();
+
+
+   }*/
 }

@@ -14,7 +14,6 @@ public interface AdsCommentMapper {
     String USER_AVATAR = "/users/avatar/";
     AdsCommentMapper INSTANSE = Mappers.getMapper(AdsCommentMapper.class);
 
-
     @Mapping(target = "author", ignore = true)
     @Mapping(target = "id", source = "pk")
     @Mapping(target = "createdAt", ignore = true)
@@ -24,7 +23,6 @@ public interface AdsCommentMapper {
     @Mapping(target = "author", source = "author.id")
     @Mapping(target = "authorFirstName", source = "author.firstName")
     @Mapping(target = "authorImage", source = "author.avatar", qualifiedByName = "avatarMapping")
-    //не делает маппинг картинки, разобраться?
     @Mapping(target = "pk", source = "id")
     @Mapping(target = "createdAt", source = "createdAt")
     AdsCommentDto toDto(Comment entity);

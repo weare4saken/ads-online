@@ -16,7 +16,6 @@ public interface AdsMapper {
     String ADS_IMAGE = "/ads/image/";
     AdsMapper INSTANCE = Mappers.getMapper(AdsMapper.class);
 
-
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "author", ignore = true)
     @Mapping(target = "image", ignore = true)
@@ -35,11 +34,6 @@ public interface AdsMapper {
     @Mapping(target = "pk", source = "id")
     FullAds toFullAds(Ads ads);
 
-    /*@Mapping(target = "id", source = "pk")
-    @Mapping(target = "author.id", source = "author")
-    @Mapping(target = "image", ignore = true)
-    Ads toEntity(AdsDto dto);*/
-
     @Named("imageMapping")
     default String imageMapping(Image image) {
         if (image == null) {
@@ -47,5 +41,10 @@ public interface AdsMapper {
         }
         return ADS_IMAGE + image.getId();
     }
+
+    /*@Mapping(target = "id", source = "pk")
+    @Mapping(target = "author.id", source = "author")
+    @Mapping(target = "image", ignore = true)
+    Ads toEntity(AdsDto dto);*/
 
 }

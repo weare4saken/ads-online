@@ -1,6 +1,5 @@
 package ru.skypro.project.marketplace.service;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import ru.skypro.project.marketplace.dto.AdsCommentDto;
 import ru.skypro.project.marketplace.model.Comment;
@@ -9,7 +8,8 @@ import java.util.List;
 
 public interface CommentService {
 
-    AdsCommentDto addAdsComment(Integer id, AdsCommentDto adsCommentDto, Authentication authentication);
+    AdsCommentDto addAdsComment(Integer id, AdsCommentDto adsCommentDto,
+                                Authentication authentication);
 
     void deleteAdsComment(Integer adId, Integer commentId);
 

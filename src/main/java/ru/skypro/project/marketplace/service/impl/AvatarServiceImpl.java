@@ -13,7 +13,7 @@ import ru.skypro.project.marketplace.service.ImageService;
 
 import java.io.IOException;
 
-//@Slf4j
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -21,27 +21,35 @@ public class AvatarServiceImpl implements ImageService<Avatar> {
 
     private final AvatarRepository avatarRepository;
 
+
     @Override
     public void remove(Avatar avatar) {
+        log.debug("Removing avatar with id {}", avatar.getId());
         avatarRepository.delete(avatar);
+        log.info("Avatar removed successfully");
     }
 
     @Override
     public Avatar uploadImage(MultipartFile avatarFile) throws IOException {
+        log.debug("Uploading avatar file: {}", avatarFile.getOriginalFilename());
         Avatar avatar = new Avatar();
         avatar.setMediaType(avatarFile.getContentType());
         avatar.setFileSize(avatarFile.getSize());
         avatar.setData(avatarFile.getBytes());
-        return avatarRepository.save(avatar);
+        Avatar savedAvatar = avatarRepository.save(avatar);
+        log.info("Avatar successfully uploaded with id {}", savedAvatar.getId());
+        return savedAvatar;
     }
 
-    public Avatar getAvatarById(Integer id) {
+    @Override
+    public Avatar getImageById(Integer id) {
+        log.debug("Getting avatar with id: {}", id);
         return avatarRepository.findById(id).orElseThrow(ImageNotFoundException::new);
     }
 
     @Override
     public Pair<String, byte[]> getImage(Integer id) {
-        Avatar avatar = getAvatarById(id);
+        Avatar avatar = getImageById(id);
         return Pair.of(avatar.getMediaType(), avatar.getData());
     }
 

@@ -159,7 +159,7 @@ public class AdsController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("{id}/avatar")
+    @GetMapping("/image/{id}")
     public ResponseEntity<byte[]> getAvatar(@PathVariable Integer id) {
         Pair<String, byte[]> pair = imageService.getImage(id);
         return ResponseEntity.ok()

@@ -9,7 +9,9 @@ public interface ImageService<T> {
 
     void remove(T object);
 
-    Object uploadImage(MultipartFile file) throws IOException;
+    T uploadImage(MultipartFile file) throws IOException;
+
+    T getImageById(Integer id);
 
     Pair<String, byte[]> getImage(Integer id);
 

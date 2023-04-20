@@ -21,21 +21,29 @@ public class ImageServiceImpl implements ImageService<Image> {
 
     private final ImageRepository imageRepository;
 
+
     @Override
     public void remove(Image image) {
+        log.debug("Removing avatar with id {}", image.getId());
         imageRepository.delete(image);
+        log.info("Avatar removed successfully");
     }
 
     @Override
     public Image uploadImage(MultipartFile imageFile) throws IOException {
+        log.debug("Uploading inage file: " + imageFile.getOriginalFilename());
         Image image = new Image();
         image.setMediaType(imageFile.getContentType());
         image.setFileSize(imageFile.getSize());
         image.setData(imageFile.getBytes());
-        return imageRepository.save(image);
+        Image savedImage = imageRepository.save(image);
+        log.info("Image successfully uploaded with id {}", savedImage.getId());
+        return savedImage;
     }
 
+    @Override
     public Image getImageById(Integer id) {
+        log.debug("Getting image with id: {}", id);
         return imageRepository.findById(id).orElseThrow(ImageNotFoundException::new);
     }
 

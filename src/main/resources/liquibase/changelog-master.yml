@@ -8,9 +8,6 @@ databaseChangeLog:
   - include:
       file: liquibase/changesets/users-table.sql
 
-#  - include:
-#      file: liquibase/changesets/authorities-table.sql
-
   - include:
       file: liquibase/changesets/ads-table.sql
 

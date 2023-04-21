@@ -1,4 +1,4 @@
-package ru.skypro.project.marketplace.configuration.security;
+package ru.skypro.project.marketplace.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.skypro.project.marketplace.dto.CustomUserDetails;
 import ru.skypro.project.marketplace.dto.RegisterReq;
 import ru.skypro.project.marketplace.enums.Role;
 import ru.skypro.project.marketplace.exception.IncorrectUsernameException;

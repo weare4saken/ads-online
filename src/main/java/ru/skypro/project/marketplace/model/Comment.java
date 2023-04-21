@@ -3,6 +3,8 @@ package ru.skypro.project.marketplace.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.Instant;
 
@@ -20,11 +22,11 @@ public class Comment {
     @NotNull
     private Instant createdAt;
     @NotNull
+    @NotEmpty
+    @NotBlank
     private String text;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private Ads ads;
-
     @ManyToOne(fetch = FetchType.LAZY)
     private User author;
 

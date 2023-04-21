@@ -1,4 +1,4 @@
-package ru.skypro.project.marketplace.configuration.security;
+package ru.skypro.project.marketplace.dto;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;

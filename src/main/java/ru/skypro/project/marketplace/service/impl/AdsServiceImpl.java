@@ -90,7 +90,9 @@ public class AdsServiceImpl implements AdsService {
     public void updateAdsImage(Integer id, MultipartFile imageFile) throws IOException {
         log.debug("Updating ads image by id: {}", id);
         Ads ads = findAdsById(id);
-        imageService.remove(ads.getImage());
+        if (ads.getImage() != null) {
+            imageService.remove(ads.getImage());
+        }
         ads.setImage(imageService.uploadImage(imageFile));
         adsRepository.save(ads);
         log.debug("Avatar updated for ads: {}", ads.getTitle());

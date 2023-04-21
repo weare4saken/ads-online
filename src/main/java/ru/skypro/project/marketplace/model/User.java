@@ -42,11 +42,11 @@ public class User {
     private Boolean enabled;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Ads> ads;
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Comment> comments;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Avatar avatar;
 
 }

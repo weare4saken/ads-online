@@ -57,7 +57,7 @@ public class CommentController {
             }
     )
     @PreAuthorize("@commentServiceImpl.getCommentById(#commentId).getAuthor().username" +
-            "== authentication.principal.username or hasRole('ROLE_ADMIN')")
+            "== authentication.name or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> deleteAdsComment(@PathVariable("adId") Integer adId,
                                               @PathVariable("commentId") Integer commentId) {
@@ -77,7 +77,7 @@ public class CommentController {
             }
     )
     @PreAuthorize("@commentServiceImpl.getCommentById(#commentId).getAuthor().username" +
-            "== authentication.principal.username or hasRole('ROLE_ADMIN')")
+            "== authentication.name or hasRole('ROLE_ADMIN')")
     @PatchMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<AdsCommentDto> updateComments(@PathVariable("adId") Integer adId,
                                                         @PathVariable("commentId") Integer commentId,

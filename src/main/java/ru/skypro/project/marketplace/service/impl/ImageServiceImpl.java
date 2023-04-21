@@ -24,7 +24,7 @@ public class ImageServiceImpl implements ImageService<Image> {
 
     @Override
     public void remove(Image image) {
-        log.debug("Removing image with id {}", image.getId());
+//        log.debug("Removing image with id {}", image.getId());
         imageRepository.delete(image);
         log.info("Image removed successfully");
     }

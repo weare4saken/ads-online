@@ -92,7 +92,7 @@ public class AdsController {
             }
     )
     @PreAuthorize("@adsServiceImpl.getAdsById(#id).getEmail()" +
-                    "== authentication.principal.username or hasRole('ROLE_ADMIN')")
+                    "== authentication.name or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeAds(@PathVariable("id") Integer id) {
         adsService.removeAdsById(id);
@@ -112,7 +112,7 @@ public class AdsController {
         }
     )
     @PreAuthorize("@adsServiceImpl.getAdsById(#id).getEmail()" +
-                    "== authentication.principal.username or hasRole('ROLE_ADMIN')")
+                    "== authentication.name or hasRole('ROLE_ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<AdsDto> updateAds(@PathVariable("id") Integer id,
                                             @RequestBody CreateAds createAds) {
@@ -146,7 +146,7 @@ public class AdsController {
             }
     )
     @PreAuthorize("@adsServiceImpl.getAdsById(#id).getEmail()" +
-                    "== authentication.principal.username or hasRole('ROLE_ADMIN')")
+                    "== authentication.name or hasRole('ROLE_ADMIN')")
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateAdsImage(@PathVariable("id") Integer id,
                                             @RequestPart("image") MultipartFile imageFile) throws IOException {
@@ -155,7 +155,7 @@ public class AdsController {
     }
 
     @Operation(hidden = true)
-    @GetMapping("/image/{id}")
+    @GetMapping(value = "/image/{id}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<byte[]> getImage(@PathVariable("id") Integer id) {
         Pair<String, byte[]> pair = imageService.getImage(id);
         return ResponseEntity.ok()

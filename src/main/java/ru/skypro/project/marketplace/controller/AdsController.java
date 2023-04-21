@@ -91,7 +91,7 @@ public class AdsController {
                     @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content)
             }
     )
-    @PreAuthorize("adsServiceImpl.getAdsById(#id).getEmail()" +
+    @PreAuthorize("@adsServiceImpl.getAdsById(#id).getEmail()" +
                     "== authentication.principal.username or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removeAds(@PathVariable("id") Integer id) {
@@ -111,7 +111,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
         }
     )
-    @PreAuthorize("adsServiceImpl.getAdsById(#id).getEmail()" +
+    @PreAuthorize("@adsServiceImpl.getAdsById(#id).getEmail()" +
                     "== authentication.principal.username or hasRole('ROLE_ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<AdsDto> updateAds(@PathVariable("id") Integer id,
@@ -145,7 +145,7 @@ public class AdsController {
                     @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
             }
     )
-    @PreAuthorize("adsServiceImpl.getAdsById(#id).getEmail()" +
+    @PreAuthorize("@adsServiceImpl.getAdsById(#id).getEmail()" +
                     "== authentication.principal.username or hasRole('ROLE_ADMIN')")
     @PatchMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateAdsImage(@PathVariable("id") Integer id,

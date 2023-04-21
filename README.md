@@ -8,7 +8,7 @@ ___
 ## Описание проекта и его функциональность
 
 Сайт является аналогом интернет-магазина Avito. 
-Пользователи могут размещать объявления и оставлять комментарии к объявлениям других пользователей.
+Пользователи могут размещать объявления товаров и оставлять комментарии к объявлениям других пользователей.
 
 ### Реализованы следующие функции:
 
@@ -24,26 +24,26 @@ ___
 
 ___
 ## Инструменты, используемые в проекте:
-* Backend:
+* **Backend**:
     - Java 11
     - Maven
     - Spring Boot
     - Spring Web
     - Spring Data JPA
     - Spring Security
-    - GIT
+    - Stream API
     - REST
+    - GIT
     - Swagger
     - Lombok
-    - Stream API
     - Mapstruck
-* SQL:
+* **SQL**:
     - PostgreSQL
     - Liquibase
-* Test:
+* **Test**:
     - Junit
     - Mockito
-* Frontend:
+* **Frontend**:
     - Docker image
 
 ___

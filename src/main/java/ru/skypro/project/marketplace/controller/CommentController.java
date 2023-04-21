@@ -56,7 +56,7 @@ public class CommentController {
                     @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
             }
     )
-    @PreAuthorize("commentServiceImpl.getCommentById(#commentId).getAuthor().username" +
+    @PreAuthorize("@commentServiceImpl.getCommentById(#commentId).getAuthor().username" +
             "== authentication.principal.username or hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<?> deleteAdsComment(@PathVariable("adId") Integer adId,
@@ -76,7 +76,7 @@ public class CommentController {
                     @ApiResponse(responseCode = "404", description = "Not Found", content = @Content)
             }
     )
-    @PreAuthorize("commentServiceImpl.getCommentById(#commentId).getAuthor().username" +
+    @PreAuthorize("@commentServiceImpl.getCommentById(#commentId).getAuthor().username" +
             "== authentication.principal.username or hasRole('ROLE_ADMIN')")
     @PatchMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<AdsCommentDto> updateComments(@PathVariable("adId") Integer adId,

@@ -91,7 +91,7 @@ public class UserController {
                     @ApiResponse(responseCode = "404", description = "Not found", content = @Content)
             }
     )
-    @PatchMapping(value = "/me/image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PatchMapping(value = "/me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> updateUserAvatar(@RequestPart("image") MultipartFile avatarFile,
                                               Authentication authentication) throws IOException {
         userService.updateUserAvatar(avatarFile, authentication);
@@ -107,5 +107,6 @@ public class UserController {
                 .contentLength(pair.getRight().length)
                 .body(pair.getRight());
     }
+
 
 }

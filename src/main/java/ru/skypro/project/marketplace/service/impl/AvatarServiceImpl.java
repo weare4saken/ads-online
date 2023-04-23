@@ -2,7 +2,6 @@ package ru.skypro.project.marketplace.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,12 +44,6 @@ public class AvatarServiceImpl implements ImageService<Avatar> {
     public Avatar getImageById(Integer id) {
         log.debug("Getting avatar with id: {}", id);
         return avatarRepository.findById(id).orElseThrow(ImageNotFoundException::new);
-    }
-
-    @Override
-    public Pair<String, byte[]> getImage(Integer id) {
-        Avatar avatar = getImageById(id);
-        return Pair.of(avatar.getMediaType(), avatar.getData());
     }
 
 }

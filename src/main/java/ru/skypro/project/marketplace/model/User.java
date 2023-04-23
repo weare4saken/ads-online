@@ -4,8 +4,6 @@ import lombok.*;
 import ru.skypro.project.marketplace.enums.Role;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -20,24 +18,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotNull
-    @NotEmpty
-    @NotBlank
     private String username;
     @NotNull
-    @NotEmpty
-    @NotBlank
     private String firstName;
     @NotNull
-    @NotEmpty
-    @NotBlank
     private String lastName;
     @NotNull
-    @NotEmpty
-    @NotBlank
     private String phone;
     @NotNull
-    @NotEmpty
-    @NotBlank
     private String password;
     private Boolean enabled;
     @Enumerated(EnumType.STRING)

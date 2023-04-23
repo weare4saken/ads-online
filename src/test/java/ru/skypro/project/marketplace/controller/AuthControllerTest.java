@@ -18,8 +18,6 @@ import ru.skypro.project.marketplace.exception.UsernameNotFoundException;
 import ru.skypro.project.marketplace.model.User;
 import ru.skypro.project.marketplace.repository.UserRepository;
 
-import java.util.Optional;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -84,7 +82,9 @@ public class AuthControllerTest {
                         .content(objectMapper.writeValueAsString(registerReq)))
                 .andExpect(status().isOk());
 
-        User savedUser = userRepository.findByUsernameIgnoreCase(registerReq.getUsername()).orElseThrow(UsernameNotFoundException::new);
+        User savedUser = userRepository.findByUsernameIgnoreCase(registerReq.getUsername())
+                .orElseThrow(UsernameNotFoundException::new);
+
         userRepository.delete(savedUser);
     }
 

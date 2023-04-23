@@ -13,6 +13,8 @@ public interface ImageService<T> {
 
     T getImageById(Integer id);
 
-    Pair<String, byte[]> getImage(Integer id);
+//    Pair<String, byte[]> getImage(Integer id);
+
+
 
 }

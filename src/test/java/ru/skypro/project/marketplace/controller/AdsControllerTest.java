@@ -71,12 +71,8 @@ public class AdsControllerTest {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
         auth = new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
-                userDetails.getPassword(),
-                userDetails.getAuthorities());
-
-        createAds.setTitle("Ads");
-        createAds.setDescription("description");
-        createAds.setPrice(1000);
+                                                        userDetails.getPassword(),
+                                                        userDetails.getAuthorities());
 
         ads.setTitle("Ads");
         ads.setDescription("description");
@@ -101,6 +97,9 @@ public class AdsControllerTest {
 
     @Test
     public void testAddAdsReturnCorrectAddedAdsFromDatabase() throws Exception {
+        createAds.setTitle("Ads");
+        createAds.setDescription("description");
+        createAds.setPrice(1000);
         MockPart created = new MockPart("properties", objectMapper.writeValueAsBytes(createAds));
 
         mockMvc.perform(multipart("/ads")

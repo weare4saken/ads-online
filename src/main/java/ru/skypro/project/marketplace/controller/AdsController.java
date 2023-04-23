@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -156,12 +155,8 @@ public class AdsController {
 
     @Operation(hidden = true)
     @GetMapping(value = "/image/{id}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<byte[]> getImage(@PathVariable("id") Integer id) {
-        Pair<String, byte[]> pair = imageService.getImage(id);
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(pair.getLeft()))
-                .contentLength(pair.getRight().length)
-                .body(pair.getRight());
+    public byte[] getImage(@PathVariable("id") Integer id) {
+        return imageService.getImageById(id).getData();
     }
 
 }

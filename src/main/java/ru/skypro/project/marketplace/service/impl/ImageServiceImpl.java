@@ -2,7 +2,6 @@ package ru.skypro.project.marketplace.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,7 +23,6 @@ public class ImageServiceImpl implements ImageService<Image> {
 
     @Override
     public void remove(Image image) {
-//        log.debug("Removing image with id {}", image.getId());
         imageRepository.delete(image);
         log.info("Image removed successfully");
     }
@@ -45,12 +43,6 @@ public class ImageServiceImpl implements ImageService<Image> {
     public Image getImageById(Integer id) {
         log.debug("Getting image with id: {}", id);
         return imageRepository.findById(id).orElseThrow(ImageNotFoundException::new);
-    }
-
-    @Override
-    public Pair<String, byte[]> getImage(Integer id) {
-        Image image = getImageById(id);
-        return Pair.of(image.getMediaType(), image.getData());
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.project.marketplace.dto.NewPassword;
 import ru.skypro.project.marketplace.dto.UserDto;
 import ru.skypro.project.marketplace.exception.BadCredentialsException;
+import ru.skypro.project.marketplace.exception.IncorrectArgumentException;
 import ru.skypro.project.marketplace.exception.UsernameNotFoundException;
 import ru.skypro.project.marketplace.mapper.UserMapper;
 import ru.skypro.project.marketplace.model.User;
@@ -48,6 +49,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(UserDto userDto, Authentication authentication) {
+        if(userDto.getFirstName() == null || userDto.getFirstName().isBlank()
+            || userDto.getLastName() == null || userDto.getLastName().isBlank()
+            || userDto.getPhone() == null || userDto.getPhone().isBlank()) throw new IncorrectArgumentException();
+
         User user = getUserByUsername(authentication.getName());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
@@ -61,6 +66,7 @@ public class UserServiceImpl implements UserService {
     public void updateUserAvatar(MultipartFile avatar,
                                  Authentication authentication) throws IOException {
         User user = getUserByUsername(authentication.getName());
+
         if (user.getAvatar() != null) {
             avatarService.remove(user.getAvatar());
         }

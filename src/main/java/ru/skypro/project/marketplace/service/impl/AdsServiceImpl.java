@@ -10,6 +10,7 @@ import ru.skypro.project.marketplace.dto.AdsDto;
 import ru.skypro.project.marketplace.dto.CreateAds;
 import ru.skypro.project.marketplace.dto.FullAds;
 import ru.skypro.project.marketplace.exception.AdsNotFoundException;
+import ru.skypro.project.marketplace.exception.IncorrectArgumentException;
 import ru.skypro.project.marketplace.mapper.AdsMapper;
 import ru.skypro.project.marketplace.model.Ads;
 import ru.skypro.project.marketplace.model.Image;
@@ -43,6 +44,11 @@ public class AdsServiceImpl implements AdsService {
     @Override
     public AdsDto addAds(MultipartFile imageFile, CreateAds createAds, Authentication authentication) throws IOException {
         log.debug("Adding ads");
+
+        if (createAds.getTitle() == null || createAds.getTitle().isBlank()
+            || createAds.getDescription() == null || createAds.getDescription().isBlank()
+            || createAds.getPrice() == null) throw new IncorrectArgumentException();
+
         Ads ads = AdsMapper.INSTANCE.toEntity(createAds);
         User user = userService.getUserByUsername(authentication.getName());
         ads.setAuthor(user);
@@ -67,6 +73,11 @@ public class AdsServiceImpl implements AdsService {
     @Override
     public AdsDto updateAds(Integer id, CreateAds createAds) {
         log.debug("Updating ads by id: {}", id);
+
+        if (createAds.getTitle() == null || createAds.getTitle().isBlank()
+                || createAds.getDescription() == null || createAds.getDescription().isBlank()
+                || createAds.getPrice() == null) throw new IncorrectArgumentException();
+
         Ads ads = findAdsById(id);
         ads.setTitle(createAds.getTitle());
         ads.setDescription(createAds.getDescription());

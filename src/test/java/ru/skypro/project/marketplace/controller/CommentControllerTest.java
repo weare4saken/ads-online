@@ -86,8 +86,6 @@ public class CommentControllerTest {
         comment.setCreatedAt(Instant.now());
         comment.setAuthor(user);
         commentRepository.save(comment);
-
-        commentDto.setText("TEXT");
     }
 
     @AfterEach
@@ -110,6 +108,8 @@ public class CommentControllerTest {
 
     @Test
     public void testAddAdsCommentReturnsAddedComment() throws Exception {
+        commentDto.setText("TEXT");
+
         mockMvc.perform(post("/ads/{id}/comments", ads.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(commentDto))

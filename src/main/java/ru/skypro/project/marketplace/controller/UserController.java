@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -100,13 +99,8 @@ public class UserController {
 
     @Operation(hidden = true)
     @GetMapping(value = "/avatar/{id}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<byte[]> getAvatar(@PathVariable("id") Integer id) {
-        Pair<String, byte[]> pair = avatarService.getImage(id);
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(pair.getLeft()))
-                .contentLength(pair.getRight().length)
-                .body(pair.getRight());
+    public byte[] getAvatar(@PathVariable("id") Integer id) {
+        return avatarService.getImageById(id).getData();
     }
-
 
 }

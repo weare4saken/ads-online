@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.project.marketplace.dto.AdsCommentDto;
 import ru.skypro.project.marketplace.exception.CommentNotFoundException;
+import ru.skypro.project.marketplace.exception.IncorrectArgumentException;
 import ru.skypro.project.marketplace.mapper.AdsCommentMapper;
 import ru.skypro.project.marketplace.model.Comment;
 import ru.skypro.project.marketplace.model.User;
@@ -39,6 +40,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public AdsCommentDto addAdsComment(Integer id, AdsCommentDto adsCommentDto, Authentication authentication) {
         log.debug("Adding comment for ads with id: {}", id);
+
+        if(adsCommentDto.getText() == null || adsCommentDto.getText().isBlank()) throw new IncorrectArgumentException();
+
         Comment comment = AdsCommentMapper.INSTANSE.toEntity(adsCommentDto);
         User user = userService.getUserByUsername(authentication.getName());
         comment.setAuthor(user);
@@ -60,6 +64,9 @@ public class CommentServiceImpl implements CommentService {
     public AdsCommentDto updateComments(Integer adId, Integer commentId,
                                         AdsCommentDto adsCommentDto) {
         log.debug("Updating comment with id: {} for ads with id: {}", commentId, adId);
+
+        if(adsCommentDto.getText() == null || adsCommentDto.getText().isBlank()) throw new IncorrectArgumentException();
+
         Comment adsComment = getAdsComment(commentId, adId);
         adsComment.setText(adsCommentDto.getText());
         commentRepository.save(adsComment);

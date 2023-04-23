@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -20,13 +18,9 @@ public class Ads {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotNull
-    @NotEmpty
-    @NotBlank
     private String title;
     private String description;
     @NotNull
-    @NotEmpty
-    @NotBlank
     private Integer price;
     @ManyToOne(fetch = FetchType.LAZY)
     private User author;

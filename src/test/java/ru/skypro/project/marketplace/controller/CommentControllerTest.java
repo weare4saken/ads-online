@@ -54,10 +54,10 @@ public class CommentControllerTest {
     private CustomUserDetailsService userDetailsService;
 
     private Authentication auth;
-    private User user = new User();
-    private Ads ads = new Ads();
-    private Comment comment = new Comment();
-    private AdsCommentDto commentDto = new AdsCommentDto();
+    private final User user = new User();
+    private final Ads ads = new Ads();
+    private final Comment comment = new Comment();
+    private final AdsCommentDto commentDto = new AdsCommentDto();
 
     @BeforeEach
     void setUp() {

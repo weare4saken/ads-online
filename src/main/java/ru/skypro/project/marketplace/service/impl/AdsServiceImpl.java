@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.project.marketplace.dto.AdsDto;
 import ru.skypro.project.marketplace.dto.CreateAds;
+import ru.skypro.project.marketplace.dto.CustomUserDetails;
 import ru.skypro.project.marketplace.dto.FullAds;
 import ru.skypro.project.marketplace.exception.AdsNotFoundException;
 import ru.skypro.project.marketplace.exception.IncorrectArgumentException;
@@ -28,7 +29,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AdsServiceImpl implements AdsService {
 
-    private final UserServiceImpl userService;
     private final AdsRepository adsRepository;
     private final ImageServiceImpl imageService;
 
@@ -50,7 +50,7 @@ public class AdsServiceImpl implements AdsService {
             || createAds.getPrice() == null) throw new IncorrectArgumentException();
 
         Ads ads = AdsMapper.INSTANCE.toEntity(createAds);
-        User user = userService.getUserByUsername(authentication.getName());
+        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         ads.setAuthor(user);
         Image image = imageService.uploadImage(imageFile);
         ads.setImage(image);
@@ -91,7 +91,7 @@ public class AdsServiceImpl implements AdsService {
     public List<AdsDto> getAdsMe(Authentication authentication) {
         log.debug("Getting ads by author {}", authentication.getName());
         return adsRepository.
-                findAllByAuthorId(userService.getUserByUsername(authentication.getName()).getId())
+                findAllByAuthorId(((CustomUserDetails) authentication.getPrincipal()).getUser().getId())
                 .stream()
                 .map(AdsMapper.INSTANCE::toDto)
                 .collect(Collectors.toList());

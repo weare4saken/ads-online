@@ -7,11 +7,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.project.marketplace.dto.CustomUserDetails;
 import ru.skypro.project.marketplace.dto.NewPassword;
 import ru.skypro.project.marketplace.dto.UserDto;
 import ru.skypro.project.marketplace.exception.BadCredentialsException;
 import ru.skypro.project.marketplace.exception.IncorrectArgumentException;
-import ru.skypro.project.marketplace.exception.UsernameNotFoundException;
 import ru.skypro.project.marketplace.mapper.UserMapper;
 import ru.skypro.project.marketplace.model.User;
 import ru.skypro.project.marketplace.repository.UserRepository;
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updatePassword(NewPassword newPassword, Authentication authentication) {
-        User user = getUserByUsername(authentication.getName());
+        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         if (!passwordEncoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
             throw new BadCredentialsException();
         }
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUser(Authentication authentication) {
         log.info("Returning details for user: {}", authentication.getName());
-        return UserMapper.INSTANCE.toDto(getUserByUsername(authentication.getName()));
+        return UserMapper.INSTANCE.toDto(((CustomUserDetails) authentication.getPrincipal()).getUser());
     }
 
     @Override
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
             || userDto.getLastName() == null || userDto.getLastName().isBlank()
             || userDto.getPhone() == null || userDto.getPhone().isBlank()) throw new IncorrectArgumentException();
 
-        User user = getUserByUsername(authentication.getName());
+        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setPhone(userDto.getPhone());
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserAvatar(MultipartFile avatar,
                                  Authentication authentication) throws IOException {
-        User user = getUserByUsername(authentication.getName());
+        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
 
         if (user.getAvatar() != null) {
             avatarService.remove(user.getAvatar());
@@ -73,11 +73,6 @@ public class UserServiceImpl implements UserService {
         user.setAvatar(avatarService.uploadImage(avatar));
         userRepository.save(user);
         log.debug("Avatar updated for user: {}", authentication.getName());
-    }
-
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsernameIgnoreCase(username)
-                .orElseThrow(UsernameNotFoundException::new);
     }
 
 }

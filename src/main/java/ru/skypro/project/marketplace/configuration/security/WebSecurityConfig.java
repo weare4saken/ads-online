@@ -25,8 +25,8 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
             "/register",
             "/ads",
             "/ads/*",
-            "/ads/image/**",
-            "/ads/*/comments"
+            "/ads/image/*",
+            "/users/avatar/*"
     };
 
 
@@ -40,8 +40,6 @@ public class WebSecurityConfig extends GlobalMethodSecurityConfiguration {
                                         .mvcMatchers(AUTH_WHITELIST)
                                         .permitAll()
                                         .mvcMatchers("/ads/**", "/users/**")
-                                        .authenticated()
-                                        .anyRequest()
                                         .authenticated()
                 )
                 .cors()

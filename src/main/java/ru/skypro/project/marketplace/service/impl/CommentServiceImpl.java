@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skypro.project.marketplace.dto.AdsCommentDto;
+import ru.skypro.project.marketplace.dto.CustomUserDetails;
 import ru.skypro.project.marketplace.exception.CommentNotFoundException;
 import ru.skypro.project.marketplace.exception.IncorrectArgumentException;
 import ru.skypro.project.marketplace.mapper.AdsCommentMapper;
@@ -25,7 +26,6 @@ import java.util.stream.Collectors;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-    private final UserServiceImpl userService;
     private final AdsServiceImpl adsService;
 
     @Override
@@ -44,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
         if(adsCommentDto.getText() == null || adsCommentDto.getText().isBlank()) throw new IncorrectArgumentException();
 
         Comment comment = AdsCommentMapper.INSTANSE.toEntity(adsCommentDto);
-        User user = userService.getUserByUsername(authentication.getName());
+        User user = ((CustomUserDetails) authentication.getPrincipal()).getUser();
         comment.setAuthor(user);
         comment.setAds(adsService.findAdsById(id));
         comment.setCreatedAt(Instant.now());
